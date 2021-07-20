@@ -69,16 +69,61 @@ ORDER BY 4 DESC;
 
 #5. Bookings by month
 ALTER TABLE hotel_details ADD COLUMN MONTHS text;
-UPDATE hotel_details SET MONTHS = month(check_in);
+ALTER TABLE hotel_details DROP COLUMN MONTHS;
+ALTER TABLE hotel_details ADD COLUMN MONTHS text;
+UPDATE hotel_details SET MONTHS = month(date_of_booking);
+ALTER TABLE hotel_details ADD COLUMN Month_Name text;
+ALTER TABLE hotel_details DROP COLUMN Month_Name;
 ALTER TABLE hotel_details ADD COLUMN Month_Name text;
 UPDATE hotel_details SET Month_Name = (CASE WHEN MONTHS=1 THEN 'Jan' WHEN MONTHS=2 THEN 'Feb' WHEN MONTHS=3 THEN 'March' ELSE NULL END);
 SELECT 
 city_details.City,
-SUM(CASE WHEN Month_Name='Jan' THEN no_of_rooms ELSE NULL END) AS Bookings_in_Jan,
-SUM(CASE WHEN Month_Name='Feb' THEN no_of_rooms ELSE NULL END) AS Bookings_in_Feb,
-SUM(CASE WHEN Month_Name='March' THEN no_of_rooms ELSE NULL END) AS Bookings_in_Mar
+COUNT(CASE WHEN Month_Name='Jan' THEN booking_id ELSE NULL END) AS Bookings_in_Jan,
+COUNT(CASE WHEN Month_Name='Feb' THEN booking_id  ELSE NULL END) AS Bookings_in_Feb,
+COUNT(CASE WHEN Month_Name='March' THEN booking_id ELSE NULL END) AS Bookings_in_Mar
 FROM hotel_details
 LEFT JOIN city_details
 ON hotel_details.hotel_id=city_details.Hotel_id
 GROUP BY 1;
+
+#6. Bookings for Jan,Feb,Mar
+ALTER TABLE hotel_details ADD COLUMN Month_Name_Bookedfor text;
+UPDATE hotel_details SET Month_Name_Bookedfor = month(check_in);
+ALTER TABLE hotel_details ADD COLUMN Month_Name_Bookedfor_map text;
+UPDATE hotel_details SET Month_Name_Bookedfor_map = (CASE WHEN Month_Name_Bookedfor=1 THEN 'Jan' WHEN Month_Name_Bookedfor=2 THEN 'Feb' WHEN Month_Name_Bookedfor=3 THEN 'Mar' ELSE NULL END);
+SELECT 
+city_details.City,
+COUNT(CASE WHEN Month_Name_Bookedfor_map='Jan' THEN booking_id ELSE NULL END) AS Bookings_in_Jan,
+COUNT(CASE WHEN Month_Name_Bookedfor_map='Feb' THEN booking_id  ELSE NULL END) AS Bookings_in_Feb,
+COUNT(CASE WHEN Month_Name_Bookedfor_map='Mar' THEN booking_id ELSE NULL END) AS Bookings_in_Mar
+FROM hotel_details
+LEFT JOIN city_details
+ON hotel_details.hotel_id=city_details.Hotel_id
+GROUP BY 1;
+
+#6. How many days prior the bookings were made
+SELECT 
+COUNT(*) AS number_of_bookings,
+datediff(check_in,date_of_booking) AS Difference_in_dates
+FROM hotel_details
+GROUP BY 2
+ORDER BY 1 DESC;
+
+#7.Revenue comaprison by City
+SELECT * FROM hotel_details;
+SELECT 
+city_details.City,
+SUM(amount) AS Gross_Revenue,
+SUM(CASE WHEN Cancelled_bookings=0 THEN amount ELSE NULL END) AS Net_Revenue
+FROM hotel_details
+LEFT JOIN city_details
+ON hotel_details.hotel_id=city_details.Hotel_id
+GROUP BY 1;
+
+
+
+
+
+
+
 
