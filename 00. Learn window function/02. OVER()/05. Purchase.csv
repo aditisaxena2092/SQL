@@ -1,0 +1,21 @@
+id,department_id,item,price
+1,4,monitor,531
+2,1,printer,315
+3,3,whiteboard,170
+4,5,training,117
+5,3,computer,2190
+6,1,monitor,418
+7,3,whiteboard,120
+8,3,monitor,388
+9,5,paper,37
+10,1,paper,695
+11,3,projector,407
+12,4,garden party,986
+13,5,projector,481
+14,2,chair,180
+15,2,desk,854
+16,2,post-it,15
+17,3,paper,60
+18,2,tv,943
+19,2,desk,478
+20,5,keyboard,214
