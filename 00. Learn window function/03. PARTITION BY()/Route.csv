@@ -1,0 +1,8 @@
+id,name,from_city,to_city,distance
+1,Manchester Express,Sheffield,Manchester,60
+2,GoToLeads,Manchester,Leeds,70
+3,StudentRoute,London,Oxford,90
+4,MiddleEnglandWay,London,Leicester,160
+5,BeatlesRoute,Liverpool,York,160
+6,NewcastleDaily,York,Newcastle,135
+7,ScotlandSpeed,Newcastle,Edinburgh,200

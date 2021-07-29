@@ -1,0 +1,7 @@
+id,model,max_speed,production_year,first_class_places,second_class_places
+1,InterCity 100,160,2000,30,230
+2,InterCity 100,160,2000,40,210
+3,InterCity 125,200,2001,40,180
+4,Pendolino 390,240,2012,45,150
+5,Pendolino ETR310,240,2010,50,250
+6,Pendolino 390,240,2010,60,250
