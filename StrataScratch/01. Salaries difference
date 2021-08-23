@@ -1,14 +1,13 @@
+WITH salary as
+(
+SELECT department,
+max(salary) as tot_sal
+FROM db_employee e 
+JOIN db_dept d on d.id = e.department_id
+WHERE department in ('marketing','engineering')
+GROUP BY department
+)
 SELECT
-(SELECT MAX(emp.salary) 
- FROM db_employee AS emp
- INNER JOIN db_dept AS dept
- ON emp.department_id = dept.id
- GROUP BY dept.department
- HAVING dept.department = 'marketing')
--
-(SELECT MAX(emp.salary)
- FROM db_employee AS emp
- INNER JOIN db_dept AS dept
- ON emp.department_id = dept.id
- GROUP BY dept.department
- HAVING dept.department = 'engineering') AS sal_diff
+(select tot_sal from salary where department = 'marketing') - (select tot_sal from salary where department = 'engineering') as salary_diff
+FROM salary
+LIMIT 1;
