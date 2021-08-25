@@ -1,0 +1,20 @@
+WITH total_energy as (
+    select * From fb_eu_energy UNION ALL
+    select * from fb_asia_energy UNION ALL
+    Select * from fb_na_energy),
+energy_by_date as (
+    SELECT date,SUM(consumption) AS total_energy_consumed 
+    FROM total_energy 
+    GROUP BY date
+    ORDER BY date ASC),
+max_energy as (
+    SELECT max(total_energy_consumed) AS max_energy
+    FROM energy_by_date)
+SELECT ebd.*
+FROM max_energy m
+LEFT JOIN energy_by_date ebd
+ON m.max_energy=ebd.total_energy_consumed;
+
+;
+
+
