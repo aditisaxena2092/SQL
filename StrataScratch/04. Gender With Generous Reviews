@@ -1,0 +1,16 @@
+WITH gender_reviews as
+    (SELECT
+            ag.gender as gender,
+            avg(ar.review_score) as avg_score
+    FROM airbnb_reviews ar
+    LEFT JOIN airbnb_guests ag
+    ON ar.from_user=ag.guest_id
+    WHERE ar.from_type='guest'
+    GROUP BY 1),
+ranking as(
+    SELECT *,
+    rank() over(order by avg_score DESC) as ranked_reviews
+    FROM gender_reviews)
+    SELECT gender, avg_score
+    FROM ranking
+    WHERE ranked_reviews=1;
