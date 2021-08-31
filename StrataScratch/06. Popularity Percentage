@@ -1,0 +1,12 @@
+SELECT
+    COUNT(*)
+FROM (
+    select DISTINCT user1 AS user_id from facebook_friends UNION
+    Select DISTINCT user2  AS user_id from facebook_friends) total_unique_users;
+
+SELECT user1, user2
+FROM facebook_friends
+UNION
+SELECT user1 as user2, user2 as user1
+FROM facebook_friends;
+
