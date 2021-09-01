@@ -1,0 +1,34 @@
+WITH total_cost as (
+    select
+        o.cust_id,
+        c.first_name,
+        o.order_date,
+        SUM(total_order_cost) as total_cost
+    from orders o
+    LEFT JOIN customers c
+    ON o.cust_id=c.id
+    AND order_date BETWEEN '2019-02-01' AND '2019-05-01'
+    GROUP BY 1,2,3
+    ORDER BY 1,2),
+orders_by_cust as (
+    Select 
+        cust_id,
+        SUM(total_cost) AS order_cost
+    FROM total_cost
+    GROUP BY 1
+    ORDER BY 2 DESC),
+ranked_cust as(
+    SELECT
+        *,
+        RANK() OVER(order by order_cost DESC) AS ranked
+    FROM orders_by_cust)
+SELECT
+first_name,
+order_date,
+total_cost
+from ranked_cust rc
+LEFT JOIN total_cost tc
+ON rc.cust_id=tc.cust_id
+WHERE rc.ranked=1
+ORDER BY total_cost DESC
+LIMIT 1;
