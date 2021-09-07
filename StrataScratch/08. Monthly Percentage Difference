@@ -1,0 +1,10 @@
+WITH summed as 
+    (select
+    to_char(created_at::date,'YYYY-MM') as mon_year,
+    sum(value) as rev
+    from sf_transactions
+    GROUP BY 1
+    order by 1)
+SELECT mon_year,
+    round(((rev-(lag(rev) OVER(order by mon_year)))/(lag(rev) OVER(order by mon_year)))*100,2) AS change 
+FROM summed;
