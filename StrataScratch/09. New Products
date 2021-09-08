@@ -1,0 +1,13 @@
+Select
+    company_name,
+    SUM(CASE WHEN (launched_in_2019=0) AND (launched_in_2020>0) THEN launched_in_2020 else null end)-SUM(launched_in_2019) as net_procucts
+FROM (
+    select
+        company_name,
+        product_name,
+        SUM(CASE WHEN year='2019' THEN 1 else 0 end) as launched_in_2019,
+        SUM(CASE WHEN year='2020' THEN 1 else 0 end) as launched_in_2020
+    from car_launches
+    GROUP BY 1,2
+    ORDER BY 1,2) view
+GROUP BY 1
