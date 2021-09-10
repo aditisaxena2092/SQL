@@ -1,0 +1,12 @@
+Select
+worker_title
+from(
+    select
+    w.worker_id,
+    t.worker_title,
+    w.salary,
+    rank() over(order by w.salary desc) as ranked
+    from worker w
+    inner join title t
+    ON w.worker_id=t.worker_ref_id) view
+WHERE ranked=1;
